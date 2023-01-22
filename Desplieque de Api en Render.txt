@@ -1,0 +1,55 @@
+
+
+Crear una base de datos en Render de PostgradSQL
+
+
+anadimos 2 nuevas librerias a nuestro proyecto, estando en nuestro ambiente 
+
+	pip install dj-database-url psycopg2-binary
+
+Para luego incluir en Databases>
+	default='postgresql://postgres:postgres@localhost:5432/mysite',        conn_max_age=60
+
+
+Tener en cuenta que para produccion necesitaremos la ruta de nuestra base de datos. Para esto modificamos a esta
+	default='sqlite:///db.sqlite3',
+
+
+
+Luego que creemos el archivo build.sh. Damos el siguiente comando, para obtener las librerias y sus versiones
+	pip freeze >requirement.txt
+
+	
+Modificamos el archivo build.sh por esto. Para instalar los paquetes de python
+	pip install -r requirement.txt 
+
+Luego le otorgamos permisos a build.sh por medio de la consola de git. Dejandolo como un ejecutable
+	chmod a+x build.sh
+
+Al instalar una nueva libria, volvemos a obtener la lista de las librerias
+	pip freeze >requirement.txt
+
+Ahora en la pagina cuando se este creado el servidor web, se necesita agregar en  Star Command. La siquiente ruta, ya que accdemos a la carpeta principal y al archivo wsgi
+	gunicorn Backend.wsgi
+
+
+
+y debemos de anadir unos envairoments, o variables de entornos, llamada
+	DATABASE_URL
+y en el value, pegamos del DATABASE la Internal Database URL
+
+y Tambien 
+	SECRET_KEY
+	Zk8fcG0S*GDXf}t[?LBFkb@OQF@*GZ     // para mantener seguro el proyecto
+tambien
+	PYTHON_VERSION
+	3.11.0
+	
+ 
+
+
+
+Bibliografia:
+	https://www.youtube.com/watch?v=GE0Q8YNKNgs&t=2s
+	
+	

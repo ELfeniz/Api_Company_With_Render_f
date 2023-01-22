@@ -69,6 +69,7 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost',
     'http://localhost:3000',
     'http://localhost:3001',
+    'https://frontend-apy-company.vercel.app/'
 
 )
 
