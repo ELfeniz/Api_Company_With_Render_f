@@ -1,0 +1,61 @@
+Cargar la APi, con fetch, en un nuevo archivo, como una constante
+
+const API_URL = "http://127.0.0.1:8000/api/company/";   // la API de Jgango que vamos a utilizar
+
+
+export const listCompanies = async () =>{  // se disena una constante async await, para hacer el consumo de los datos
+    const dat = await fetch(API_URL);
+   // const data = await dat.json();
+   // console.log(data)
+    return dat
+};
+
+Luego convertirlos datos en Json, cargandolo en un nuevo archivo
+
+y luego para solucionar el error de los corse, se intala una libreria en el ambiente virtual de nuestra API,
+llamada:
+		pip install django-cors-headers
+Luego con:     
+	pip list
+Se cersiora si quedo instalado corrrectamente.
+
+Ahora antes de la declaracion de la aplicacion en install_apps, en setting.py, colocamos:
+	'corsheaders', # habilitar Cors
+Y adicional en la parte de abajo  en "MIDDLEWARE". Agregamos:
+	'corsheaders.middleware.CorsMiddleware',  # tambien para los cors
+Y por ultimo, debajo de  "MIDDLEWARE", agregamos:
+
+ 	CORS_ORIGIN_WHITELIST = (      # lista blanca, para los origenes permitidos
+    'http://localhost',
+    'http://localhost:3000',
+	)
+	
+
+
+
+
+Control + h  ---> para reemplazar todos los class por ClassName
+
+
+Modificar el Navbar de boostrap a color negro de fondo ---> <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+
+
+Para abrir un link en una nueva pestana, con el <a></a>, debemos utilizar el argumento
+	target="_blank"  rel="noopener noreferrer"
+
+el rel, es para no referenciar nuestra pagina y obtener seguridad al momento de abrir la nueva pagina en otra pestana
+
+
+
+mb-4   ---> significa margin de 4, de manera vertical entre las tarjetas
+
+
+container my-4  ---> asignar un margin de 4, de manera que se pone en los laterales, izquierdo y derecho
+
+
+
+----------------------------------------------------------------------------------------------------
+				Librerias para Instalar
+----------------------------------------------------------------------------------------------------
+
+npm i react-router-dom

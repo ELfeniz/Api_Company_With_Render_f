@@ -1,0 +1,136 @@
+Crear un Proyecto en Django:
+	django-admin startproject "nombre del proyecto"          // esta crea un nuevo archivo
+
+	django-admin startproject "nombre del proyecto".      // Este lo crea en la misma carpeta
+
+
+Crear aplicaciones:
+	python manage.py startapp "nombre aplicacion"
+
+Agregar en el setting del backend el nombre de la aplicacion disenada en "INSTALLED_APPS":
+		ej> 'API_Companies'
+
+Ahora incluimos una libreria al lado del path, llamada "include", con el objetivo de incluir nuevas urls, a nuestro
+archivo principal:
+		path('api/', include('API_Companies.urls'))
+
+y creamos un archivo llamado "urls", en nuestra aplicacion creada, para agregar los path nuevos\
+
+Ahora creamos en el archivo "modelos.py" de nuestra aplicacion nuestros proyectos
+	class company(models.Model):
+    		name = models.CharField(max_length=50)
+    		phone = models.CharField(max_length=15)
+    		email = models.CharField(max_length=80)
+    		website = models.CharField(max_length=100)
+
+Ahora, en apps.py en nuestra aplicacion, vamos a pegar nuestro nuevo modelo disenado:
+
+from django.apps import AppConfig
+
+class ApiConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'API_Company'
+	
+Y hacemos lo mismo con admin.py:
+
+from django.contrib import admin
+
+from .models import company
+# Register your models here.
+
+admin.site.register(company)
+
+Ahora en el archivo "view.py" de la aplicacion creada, importamos la libreria
+	from django.views import View
+
+y disenar una clase, con las respectivas peticiones que contendra la API
+
+class companyListView(View):
+    @method_decorator(csrf_exempt)
+
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
+    def get(self, request, id=0):
+        #get
+        # if('name' in request.GET):
+        #     companylist = list(company.objects.filter(name__contains=request.GET['name']).values())
+        #     datos = {'message': "Success", 'companies': companylist}
+        #     return JsonResponse(datos, safe=False)
+        # else:
+           # companylist = company.objects.all()
+           # return JsonResponse(list(companylist.values()), safe=False)
+        if (id > 0):
+            company2 = list(company.objects.filter(id=id).values())
+            if len(company2) > 0:
+                datos = {'message': "Success", 'company': company2[0]}
+            else:
+                datos = {'message': "Company not found..."}
+            return JsonResponse(datos)
+        else:
+            companylist = list(company.objects.all().values())
+            if len(companylist) > 0 :
+                datos = {'message': "Success", 'companies': companylist}
+            else:
+                datos = {'message': "Companies not found..."}    
+            return JsonResponse(datos, safe=False)
+
+Ahora importamos en el archivo de "views", el modelo creado
+	from .models import company
+
+Y estas otras librerias para convertir nuestros archivos a JSON, y permitir el intercambio de informacion segura:
+
+	from django.http import JsonResponse
+	import json
+	from django.utils.decorators import method_decorator
+	from django.views.decorators.csrf import csrf_exempt
+
+
+Ahora en URLS, agregamos lo siguientes datos>
+
+from django.urls import path   # nos permitira establecer una ruta
+
+from .views import companyListView
+
+
+urlpatterns = [                 # el as_view(), es para convertirla en una lista
+    path('company/', companyListView.as_view(), name='company_list' ),  # ruta raiz que nos devolvera todas las compañias
+    path('company/<int:id>/', companyListView.as_view(), name='company_process')
+]
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+Tenemos que preparar la base de datos, o migrar los datos al editor de base de datos.
+
+	
+	python manage.py makemigrations      --- correr funcion para migrar la base de datos
+
+	python manage.py migrate            --------  hacer la migracion completa ejecutando las migraciones de la base de datos, creando las tablas entre otros datos
+
+
+
+
+
+Debemos de crear un superusuario apenas tengamos nuestra base de datos creada.
+	python manage.py createsuperuser  
+
+y llenar los campos pedidos, para este superusuario.
+
+
+
+
+
+
+--- Tener presente al momento de ingresar datos a la API, como un name:
+	http://127.0.0.1:8000/api/company/?name=my
+
+
+
+
+
+
