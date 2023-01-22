@@ -65,13 +65,8 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',    # tambien para los cors
 ]
 
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost',
-    'http://localhost:3000',
-    'http://localhost:3001',
-    'https://frontend-apy-company.vercel.app/'
-
-)
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 ROOT_URLCONF = 'Backend.urls'
